@@ -1,0 +1,17 @@
+version: "3"
+services:
+  ghost:
+    image: ghost
+  sonarr:
+    image: lscr.io/linuxserver/sonarr
+  radarr:
+    image: lscr.io/linuxserver/radarr
+  nginx:
+    image: nginx
+    ports:
+      - 80:80
+      - 8080:8080
+      - 8081:8081
+      - 8082:8082
+    volumes:
+      - ./custom-nginx.conf:/etc/nginx/conf.d/custom-nginx.conf
