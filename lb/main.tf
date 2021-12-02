@@ -4,7 +4,6 @@ resource "aws_lb" "proxy" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.web_sg.id]
   subnets            = data.aws_subnet_ids.subnets.ids
-  tags               = local.tags
 }
 
 resource "aws_security_group" "web_sg" {
@@ -24,16 +23,9 @@ resource "aws_security_group" "web_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  tags = merge(local.tags, {
-    Name = "lb-proxy-securitygroup"
-  })
 }
 
 resource "aws_default_vpc" "default" {
-  tags = {
-    Name = "Default VPC"
-  }
 }
 
 resource "aws_lb_target_group" "container" {
@@ -42,7 +34,6 @@ resource "aws_lb_target_group" "container" {
   port     = each.key
   protocol = "HTTP"
   vpc_id   = aws_default_vpc.default.id
-  tags     = local.tags
 }
 
 resource "aws_lb_target_group_attachment" "target" {
@@ -60,6 +51,4 @@ resource "aws_lb_listener" "listener" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.container[each.key].arn
   }
-
-  tags = local.tags
 }
