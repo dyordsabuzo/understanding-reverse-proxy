@@ -1,0 +1,22 @@
+#!/bin/sh -e
+
+base_path=/Users/gabuzo/workspace/projects/understanding-reverse-proxy/zones
+processed_paths=()
+
+for changed_file in lb/main.tf
+terragrunt/certificates/terragrunt.hcl
+terragrunt/ec2/.terragrunt-cache/iThPFqTn0Ky5wqsgBY1zMnxNNVM/eK8ajSHnpXXDrIAGPoBPWswn9vE/terragrunt.hcl
+terragrunt/lb/.terragrunt-cache/LjkLYOfR7evKkY6xy3-sTg-r2BE/jnIOI9YiqtJKfkfOnuj66AoT4Dk/main.tf
+terragrunt/lb/.terragrunt-cache/LjkLYOfR7evKkY6xy3-sTg-r2BE/jnIOI9YiqtJKfkfOnuj66AoT4Dk/providers.tf
+terragrunt/lb/.terragrunt-cache/LjkLYOfR7evKkY6xy3-sTg-r2BE/jnIOI9YiqtJKfkfOnuj66AoT4Dk/terragrunt.hcl
+terragrunt/lb/.terragrunt-cache/LjkLYOfR7evKkY6xy3-sTg-r2BE/jnIOI9YiqtJKfkfOnuj66AoT4Dk/variables.tf
+terragrunt/lb/terragrunt.hcl
+do
+  changed_path=
+  if [[ !  =~  ]]
+  then
+    cd / && terraform fmt -recursive &&       terraform init -backend=false && terraform validate
+
+    processed_paths+=()
+  fi
+done
