@@ -42,11 +42,11 @@ data "template_cloudinit_config" "config" {
     
     mkdir /etc/ec2-reverse-proxy
     cat > /etc/ec2-reverse-proxy/docker-compose.yaml <<EOF
-    ${templatefile("${path.module}/../docker-compose.yaml", {})}
+    ${templatefile("${path.module}/config/docker-compose.yaml", {})}
     EOF
     
     cat > /etc/ec2-reverse-proxy/custom-nginx.conf <<EOF
-    ${templatefile("${path.module}/../custom-nginx.conf", {})}
+    ${templatefile("${path.module}/config/custom-nginx.conf", {})}
     EOF
     
     cd /etc/ec2-reverse-proxy && docker-compose up -d

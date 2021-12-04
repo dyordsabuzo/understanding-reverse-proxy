@@ -7,3 +7,4 @@
 Dockerrun.aws.*
 *.sarif
 tfplan
+**/.terragrunt-cache/**
