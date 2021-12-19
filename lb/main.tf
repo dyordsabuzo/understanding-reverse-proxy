@@ -50,15 +50,21 @@ resource "aws_lb_listener" "listener" {
   certificate_arn   = var.certificate_arn
 
   default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.container["8080"].arn
+    type = "fixed-response"
+
+    fixed_response {
+      content_type = "application/json"
+      message_body = "Unauthorised"
+      status_code  = 401
+    }
   }
 }
 
 resource "aws_route53_record" "endpoint" {
-  zone_id = var.hosted_zone_id
-  name    = var.record_name
-  type    = "A"
+  for_each = toset(var.record_names)
+  zone_id  = var.hosted_zone_id
+  name     = each.key
+  type     = "A"
 
   alias {
     name                   = aws_lb.proxy.dns_name
@@ -66,3 +72,74 @@ resource "aws_route53_record" "endpoint" {
     evaluate_target_health = true
   }
 }
+
+resource "aws_lb_listener_rule" "radarr_rule" {
+  listener_arn = aws_lb_listener.listener.arn
+  priority     = 10
+
+  condition {
+    host_header {
+      values = ["radarr.pablosspot.ga"]
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.container["8082"].arn
+  }
+}
+
+resource "aws_lb_listener_rule" "sonarr_rule" {
+  listener_arn = aws_lb_listener.listener.arn
+  priority     = 20
+
+  condition {
+    host_header {
+      values = ["sonarr.pablosspot.ga"]
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.container["8081"].arn
+  }
+}
+
+resource "aws_lb_listener_rule" "blog_rule" {
+  listener_arn = aws_lb_listener.listener.arn
+  priority     = 30
+
+  condition {
+    host_header {
+      values = ["main.pablosspot.ga"]
+    }
+  }
+
+  condition {
+    path_pattern {
+      values = ["/ghost/*"]
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.container["8080"].arn
+  }
+}
+
+resource "aws_lb_listener_rule" "main_rule" {
+  listener_arn = aws_lb_listener.listener.arn
+  priority     = 40
+
+  condition {
+    host_header {
+      values = ["main.pablosspot.ga"]
+    }
+  }
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.container["8080"].arn
+  }
+}
+
