@@ -25,5 +25,5 @@ inputs = {
     instance_id = dependency.ec2.outputs.instance_id
     certificate_arn = dependency.zones.outputs.certificate_arn
     hosted_zone_id = dependency.zones.outputs.hosted_zone_id
-    record_name = "main"
+    record_names = ["main", "sonarr", "radarr"]
 }
