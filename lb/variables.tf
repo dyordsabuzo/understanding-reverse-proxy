@@ -23,3 +23,8 @@ variable "record_names" {
   description = "List of endpoint record names"
   type        = list(any)
 }
+
+variable "ec2_security_group_id" {
+  description = "ec2 security group id"
+  type        = string
+}

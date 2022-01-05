@@ -73,6 +73,15 @@ resource "aws_route53_record" "endpoint" {
   }
 }
 
+resource "aws_security_group_rule" "ec2_ingress" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8082
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.web_sg.id
+  security_group_id        = var.ec2_security_group_id
+}
+
 resource "aws_lb_listener_rule" "radarr_rule" {
   listener_arn = aws_lb_listener.listener.arn
   priority     = 10

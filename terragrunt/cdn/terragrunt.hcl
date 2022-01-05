@@ -6,10 +6,10 @@ terraform {
     source = "../../cdn"
 }
 
-dependency "ec2" {
-    config_path = "../ec2"
+dependency "lb" {
+    config_path = "../lb"
     mock_outputs = {
-        public_dns = "fake_public_dns"
+        lb_dns_name = "fake_public_dns"
     }
 }
 
