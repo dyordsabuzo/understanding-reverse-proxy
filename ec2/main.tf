@@ -1,7 +1,7 @@
 resource "aws_instance" "web" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t3.micro"
-  associate_public_ip_address = true
+  associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.profile.id
   user_data                   = data.template_cloudinit_config.config.rendered
   vpc_security_group_ids      = [aws_security_group.web_sg.id]
@@ -27,13 +27,6 @@ resource "aws_iam_role" "role" {
 resource "aws_security_group" "web_sg" {
   name        = "ec2-reverse-proxy-sg"
   description = "Allow traffic flow for reverse proxy"
-
-  ingress {
-    from_port   = 8080
-    to_port     = 8082
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
 
   egress {
     from_port   = 0

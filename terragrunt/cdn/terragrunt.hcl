@@ -6,10 +6,10 @@ terraform {
     source = "../../cdn"
 }
 
-dependency "ec2" {
-    config_path = "../ec2"
+dependency "lb" {
+    config_path = "../lb"
     mock_outputs = {
-        public_dns = "fake_public_dns"
+        lb_dns_name = "temp_lb_dns"
     }
 }
 
@@ -22,8 +22,8 @@ dependency "zones" {
 }
 
 inputs = {
-    origin_endpoint = dependency.ec2.outputs.public_dns
+    origin_endpoint = dependency.lb.outputs.lb_dns_name
     domain_name = dependency.zones.outputs.domain_name
-    aliases = ["ec2.pablosspot.ga"]
+    aliases = ["main", "sonarr", "radarr"]
     hosted_zone_id = dependency.zones.outputs.hosted_zone_id
 }
