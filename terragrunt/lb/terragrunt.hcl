@@ -11,6 +11,7 @@ dependency "ec2" {
 
     mock_outputs = {
         instance_id = "temp_value"
+        ec2_security_group_id = "temp_id"
     }
 }
 
@@ -25,5 +26,5 @@ inputs = {
     instance_id = dependency.ec2.outputs.instance_id
     certificate_arn = dependency.zones.outputs.certificate_arn
     hosted_zone_id = dependency.zones.outputs.hosted_zone_id
-    record_names = ["main", "sonarr", "radarr"]
+    ec2_security_group_id = dependency.ec2.outputs.ec2_security_group_id
 }

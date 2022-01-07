@@ -1,5 +1,5 @@
 resource "aws_cloudfront_distribution" "cf" {
-  aliases = var.aliases
+  aliases = [for alias in var.aliases : "${alias}.${var.domain_name}"]
   comment = "Cloudfront web proxy"
   enabled = true
 
@@ -10,7 +10,7 @@ resource "aws_cloudfront_distribution" "cf" {
     custom_origin_config {
       http_port              = 8080
       https_port             = 443
-      origin_protocol_policy = "http-only"
+      origin_protocol_policy = "https-only"
       origin_ssl_protocols   = ["TLSv1.2"]
     }
   }
@@ -26,7 +26,7 @@ resource "aws_cloudfront_distribution" "cf" {
 
     forwarded_values {
       query_string = true
-      headers      = []
+      headers      = ["Host"]
 
       cookies {
         forward = "all"

@@ -25,6 +25,15 @@ resource "aws_security_group" "web_sg" {
   }
 }
 
+resource "aws_security_group_rule" "ec2_ingress" {
+  type                     = "ingress"
+  from_port                = 8080
+  to_port                  = 8082
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.web_sg.id
+  security_group_id        = var.ec2_security_group_id
+}
+
 resource "aws_default_vpc" "default" {
 }
 
@@ -57,19 +66,6 @@ resource "aws_lb_listener" "listener" {
       message_body = "Unauthorised"
       status_code  = 401
     }
-  }
-}
-
-resource "aws_route53_record" "endpoint" {
-  for_each = toset(var.record_names)
-  zone_id  = var.hosted_zone_id
-  name     = each.key
-  type     = "A"
-
-  alias {
-    name                   = aws_lb.proxy.dns_name
-    zone_id                = aws_lb.proxy.zone_id
-    evaluate_target_health = true
   }
 }
 
