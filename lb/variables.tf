@@ -23,3 +23,8 @@ variable "ec2_security_group_id" {
   type        = string
   description = "EC2 security group id"
 }
+
+variable "base_domain" {
+  type        = string
+  description = "Base domain"
+}
