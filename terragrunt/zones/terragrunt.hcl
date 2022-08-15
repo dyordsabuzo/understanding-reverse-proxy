@@ -7,5 +7,5 @@ terraform {
 }
 
 inputs = {
-    domain_name = "pablosspot.ga"
+    domain_name = "pablosspot.ml"
 }
