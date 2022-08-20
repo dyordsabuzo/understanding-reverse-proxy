@@ -75,7 +75,7 @@ resource "aws_lb_listener_rule" "radarr_rule" {
 
   condition {
     host_header {
-      values = ["radarr.pablosspot.ga"]
+      values = ["radarr.${var.base_domain}"]
     }
   }
 
@@ -91,7 +91,7 @@ resource "aws_lb_listener_rule" "sonarr_rule" {
 
   condition {
     host_header {
-      values = ["sonarr.pablosspot.ga"]
+      values = ["sonarr.${var.base_domain}"]
     }
   }
 
@@ -107,7 +107,7 @@ resource "aws_lb_listener_rule" "blog_rule" {
 
   condition {
     host_header {
-      values = ["main.pablosspot.ga"]
+      values = ["main.${var.base_domain}"]
     }
   }
 
@@ -129,7 +129,7 @@ resource "aws_lb_listener_rule" "main_rule" {
 
   condition {
     host_header {
-      values = ["main.pablosspot.ga"]
+      values = ["main.${var.base_domain}"]
     }
   }
 

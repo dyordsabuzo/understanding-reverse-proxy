@@ -27,4 +27,5 @@ inputs = {
     certificate_arn = dependency.zones.outputs.certificate_arn
     hosted_zone_id = dependency.zones.outputs.hosted_zone_id
     ec2_security_group_id = dependency.ec2.outputs.ec2_security_group_id
+    base_domain = dependency.zones.outputs.domain_name
 }

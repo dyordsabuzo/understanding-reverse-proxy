@@ -32,6 +32,11 @@ resource "aws_cloudfront_distribution" "cf" {
         forward = "all"
       }
     }
+
+    lambda_function_association {
+      event_type = "origin-response"
+      lambda_arn = aws_lambda_function.lambda.qualified_arn
+    }
   }
 
   restrictions {
@@ -68,4 +73,23 @@ resource "aws_route53_record" "endpoints" {
     zone_id                = aws_cloudfront_distribution.cf.hosted_zone_id
     evaluate_target_health = true
   }
+}
+
+resource "aws_lambda_function" "lambda" {
+  description      = "Lambda edge for setting security headers"
+  function_name    = "lambda-set-security-headers"
+  runtime          = "nodejs14.x"
+  handler          = "lambda.handler"
+  memory_size      = 128
+  timeout          = 10
+  filename         = "lambda-edge.zip"
+  source_code_hash = data.archive_file.lambda.output_base64sha256
+  role             = aws_iam_role.role.arn
+  publish          = true
+}
+
+resource "aws_iam_role" "role" {
+  name               = "iam-role-for-lambda-security-headers"
+  description        = "IAM role for lambda security headers"
+  assume_role_policy = data.aws_iam_policy_document.assume_policy.json
 }
