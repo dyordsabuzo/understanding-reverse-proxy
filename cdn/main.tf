@@ -33,9 +33,9 @@ resource "aws_cloudfront_distribution" "cf" {
       }
     }
 
-    lambda_function_association {
-      event_type = "origin-response"
-      lambda_arn = aws_lambda_function.lambda.qualified_arn
+    function_association {
+      event_type   = "viewer-response"
+      function_arn = aws_cloudfront_function.function.arn
     }
   }
 
@@ -92,4 +92,11 @@ resource "aws_iam_role" "role" {
   name               = "iam-role-for-lambda-security-headers"
   description        = "IAM role for lambda security headers"
   assume_role_policy = data.aws_iam_policy_document.assume_policy.json
+}
+
+resource "aws_cloudfront_function" "function" {
+  name    = "security-header-function"
+  comment = "Setup security response headers"
+  runtime = "cloudfront-js-1.0"
+  code    = file("${path.module}/function.js")
 }
